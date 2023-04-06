@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,110 +7,102 @@
 			display: block;
 			margin-bottom: 10px;
 		}
-		input[type="text"], input[type="email"] {
-			width: 100%;
-			padding: 5px;
+		input[type="text"],
+		input[type="email"],
+		input[type="password"] {
+			padding: 8px;
+			border-radius: 4px;
 			border: 1px solid #ccc;
-			border-radius: 3px;
+			box-sizing: border-box;
+			width: 100%;
 			margin-bottom: 20px;
 		}
 		input[type="submit"] {
 			background-color: #4CAF50;
 			color: white;
-			padding: 10px 20px;
+			padding: 12px 20px;
 			border: none;
-			border-radius: 3px;
+			border-radius: 4px;
 			cursor: pointer;
 		}
 		input[type="submit"]:hover {
-			background-color: #3e8e41;
+			background-color: #45a049;
 		}
 		.error {
 			color: red;
-			font-size: 14px;
+			font-size: 12px;
+			margin-top: -10px;
 			margin-bottom: 10px;
 		}
 	</style>
 </head>
 <body>
 	<h2>Voter Validation Form</h2>
-	<form id="voter-form">
+	<form id="voterForm" onsubmit="return validateForm()">
 		<label for="name">Name:</label>
 		<input type="text" id="name" name="name" required>
+		<span class="error" id="nameError"></span>
 
 		<label for="email">Email:</label>
 		<input type="email" id="email" name="email" required>
+		<span class="error" id="emailError"></span>
 
-		<label for="age">Age:</label>
-		<input type="text" id="age" name="age" required>
-
-		<label for="voter-id">Voter ID:</label>
-		<input type="text" id="voter-id" name="voter-id" required>
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" required>
+		<span class="error" id="passwordError"></span>
 
 		<input type="submit" value="Submit">
 	</form>
 
-	<div id="error-messages"></div>
+	<script>
+		function validateForm() {
+			var name = document.getElementById("name").value.trim();
+			var email = document.getElementById("email").value.trim();
+			var password = document.getElementById("password").value.trim();
 
-	<script src="voter-validation.js"></script>
+			var nameError = document.getElementById("nameError");
+			var emailError = document.getElementById("emailError");
+			var passwordError = document.getElementById("passwordError");
+
+			var valid = true;
+
+			// Validate name
+			if (name == "") {
+				nameError.innerHTML = "Name is required";
+				valid = false;
+			} else {
+				nameError.innerHTML = "";
+			}
+
+			// Validate email
+			if (email == "") {
+				emailError.innerHTML = "Email is required";
+				valid = false;
+			} else if (!isValidEmail(email)) {
+				emailError.innerHTML = "Invalid email format";
+				valid = false;
+			} else {
+				emailError.innerHTML = "";
+			}
+
+			// Validate password
+			if (password == "") {
+				passwordError.innerHTML = "Password is required";
+				valid = false;
+			} else if (password.length < 8) {
+				passwordError.innerHTML = "Password must be at least 8 characters long";
+				valid = false;
+			} else {
+				passwordError.innerHTML = "";
+			}
+
+			return valid;
+		}
+
+		function isValidEmail(email) {
+			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			return emailRegex.test(email);
+		}
+	</script>
 </body>
 </html>
-
-
-const form = document.getElementById("voter-form");
-const errorMessages = document.getElementById("error-messages");
-
-form.addEventListener("submit", function(event) {
-	event.preventDefault();
-
-	const name = document.getElementById("name").value;
-	const email = document.getElementById("email").value;
-	const age = document.getElementById("age").value;
-	const voterId = document.getElementById("voter-id").value;
-
-	errorMessages.innerHTML = "";
-
-	if (!validateName(name)) {
-		displayError("Please enter a valid name.");
-	}
-
-	if (!validateEmail(email)) {
-		displayError("Please enter a valid email address.");
-	}
-
-	if (!validateAge(age)) {
-		displayError("You must be at least 18 years old to vote.");
-	}
-
-	if (!validateVoterId(voterId)) {
-		displayError("Please enter a valid voter ID.");
-	}
-
-	if (errorMessages.innerHTML === "") {
-		alert("Voter validation successful!");
-		form.reset();
-	}
-});
-
-function validateName(name) {
-	return /^[a-zA-Z ]+$/.test(name);
-}
-
-function validateEmail(email) {
-	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function validateAge(age) {
-	return parseInt(age) >= 18;
-}
-
-function validateVoterId(voterId) {
-	return /^[a-zA-Z0-9]+$/.test(voterId);
-}
-
-function displayError(errorMessage) {
-	const error = document.createElement("div");
-	error.classList.add("error");
-	error.innerHTML = errorMessage;
-	errorMessages.appendChild(error);
-}
