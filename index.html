@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Voter Validation Form</title>
+	<script>
+		function validateForm() {
+			var name = document.forms["voterForm"]["name"].value;
+			var age = document.forms["voterForm"]["age"].value;
+			var address = document.forms["voterForm"]["address"].value;
+			var errorMessage = "";
+
+			if (name == "") {
+				errorMessage += "Name must be filled out.\n";
+			}
+			if (age == "") {
+				errorMessage += "Age must be filled out.\n";
+			} else if (isNaN(age)) {
+				errorMessage += "Age must be a number.\n";
+			} else if (parseInt(age) < 18) {
+				errorMessage += "Voter must be 18 years or older.\n";
+			}
+			if (address == "") {
+				errorMessage += "Address must be filled out.\n";
+			}
+
+			if (errorMessage != "") {
+				alert(errorMessage);
+				return false;
+			} else {
+				return true;
+			}
+		}
+	</script>
+</head>
+<body>
+	<h2>Voter Validation Form</h2>
+	<form name="voterForm" onsubmit="return validateForm()" method="post">
+		Name: <input type="text" name="name"><br>
+		Age: <input type="text" name="age"><br>
+		Address: <input type="text" name="address"><br>
+		<input type="submit" value="Submit">
+	</form>
+</body>
+</html>
