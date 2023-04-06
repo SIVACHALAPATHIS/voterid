@@ -35,6 +35,55 @@
 			margin-bottom: 10px;
 		}
 	</style>
+	
+	<script>
+		function validateForm() {
+			var name = document.getElementById("name").value.trim();
+			var email = document.getElementById("email").value.trim();
+			var password = document.getElementById("password").value.trim();
+
+			var nameError = document.getElementById("nameError");
+			var emailError = document.getElementById("emailError");
+			var passwordError = document.getElementById("passwordError");
+
+			var valid = true;
+
+			if (name == "") {
+				nameError.innerHTML = "Name is required";
+				valid = false;
+			} else {
+				nameError.innerHTML = "";
+			}
+
+			if (email == "") {
+				emailError.innerHTML = "Email is required";
+				valid = false;
+			} else if (!isValidEmail(email)) {
+				emailError.innerHTML = "Invalid email format";
+				valid = false;
+			} else {
+				emailError.innerHTML = "";
+			}
+
+
+			if (password == "") {
+				passwordError.innerHTML = "Password is required";
+				valid = false;
+			} else if (password.length < 8) {
+				passwordError.innerHTML = "Password must be at least 8 characters long";
+				valid = false;
+			} else {
+				passwordError.innerHTML = "";
+			}
+
+			return valid;
+		}
+
+		function isValidEmail(email) {
+			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			return emailRegex.test(email);
+		}
+	</script>
 </head>
 <body>
 	<h2>Voter Validation Form</h2>
@@ -54,55 +103,5 @@
 		<input type="submit" value="Submit">
 	</form>
 
-	<script>
-		function validateForm() {
-			var name = document.getElementById("name").value.trim();
-			var email = document.getElementById("email").value.trim();
-			var password = document.getElementById("password").value.trim();
-
-			var nameError = document.getElementById("nameError");
-			var emailError = document.getElementById("emailError");
-			var passwordError = document.getElementById("passwordError");
-
-			var valid = true;
-
-			// Validate name
-			if (name == "") {
-				nameError.innerHTML = "Name is required";
-				valid = false;
-			} else {
-				nameError.innerHTML = "";
-			}
-
-			// Validate email
-			if (email == "") {
-				emailError.innerHTML = "Email is required";
-				valid = false;
-			} else if (!isValidEmail(email)) {
-				emailError.innerHTML = "Invalid email format";
-				valid = false;
-			} else {
-				emailError.innerHTML = "";
-			}
-
-			// Validate password
-			if (password == "") {
-				passwordError.innerHTML = "Password is required";
-				valid = false;
-			} else if (password.length < 8) {
-				passwordError.innerHTML = "Password must be at least 8 characters long";
-				valid = false;
-			} else {
-				passwordError.innerHTML = "";
-			}
-
-			return valid;
-		}
-
-		function isValidEmail(email) {
-			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-			return emailRegex.test(email);
-		}
-	</script>
 </body>
 </html>
